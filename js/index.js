@@ -83,11 +83,6 @@ function createMonster(e){
     age:e.target.age.value,
     description:e.target.description.value
     }
-    const button = document.createElement("button")
-    button.id = "button"
-    button.innerText = "Create"
-    const form = document.getElementById("monster-form")
-    form.append(button)
     fetch("http://localhost:3000/monsters", {
         method: "POST",
         headers: {
