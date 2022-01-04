@@ -5,7 +5,6 @@ const back = document.getElementById("back")
 const button = document.getElementById("button")
 forward.addEventListener("click",getNextPage)
 back.addEventListener("click", getPreviousPage)
-createButton()
 })
 
 let page = 0
@@ -49,6 +48,32 @@ function renderMonster(x){
     div.append(p)
 }
 
+function functionWork(e){
+    debugger
+    let monsterObject = {
+    name:e.target.name.value,
+    age:e.target.age.value,
+    description:e.target.description.value
+    }
+    fetch("http://localhost:3000/monsters", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(monsterObject)
+        })
+        .then(response => {
+            debugger
+            response.json()
+        .then(data => {  
+            console.log(data)  
+            renderMonster(data) 
+        })
+    })
+}
+
+
 function addMonster(){
     const createMonster = document.getElementById("create-monster")
     const form = document.createElement("form")
@@ -66,37 +91,11 @@ function addMonster(){
     descriptionInput.id = "description"
     descriptionInput.placeholder = "description..."
     form.append(descriptionInput)
-}
-
-function createButton(){
     const button = document.createElement("button")
     button.id = "button"
     button.innerText = "Create"
-    const form = document.getElementById("monster-form")
     form.append(button)
-    button.addEventListener("submit", event => createMonster(event))
-}
-
-function createMonster(e){
-    let monsterObject = {
-    name:e.target.name.value,
-    age:e.target.age.value,
-    description:e.target.description.value
-    }
-    fetch("http://localhost:3000/monsters", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify(monsterObject)
-        .then(response => {
-            debugger
-            response.json()
-        })
-        .then(data => {  
-            console.log(data)  
-            return data  
-        })
-    })
+    form.addEventListener("submit", event => {
+        event.preventDefault()
+        functionWork(event)})
 }
